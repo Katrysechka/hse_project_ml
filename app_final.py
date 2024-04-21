@@ -19,7 +19,7 @@ from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer
 from PyQt5.QtWidgets import QApplication, QDialog, QPushButton
 from databases import Database
 from PyQt5.QtCore import pyqtSignal
-
+from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLineEdit, QLabel, QMessageBox
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.uic import loadUi
@@ -34,37 +34,50 @@ from PyQt5.QtGui import QColor, QPainter
 from PyQt5.QtCore import QTimer, Qt
 
 main_user = None
+MUSIC = "./music_files/"
+FILES_UI= "./ui_files/"
+IMAGE = "./image_files/"
 
+# from entrance import LoginScreen, CreateAccScreen, RatingWindow
 
 class WelcomeScreen(QDialog):
-
     def __init__(self):
         super(WelcomeScreen, self).__init__()
-        loadUi("LYE.ui", self)
-
+        loadUi(FILES_UI+"LYE.ui", self)
+        self.widget = widget
         self.login.clicked.connect(self.login_account)
         self.create.clicked.connect(self.create_account)
+        self.about_us.clicked.connect(self.about_us_function)
 
     # for login connection
     def login_account(self):
-        open_login_widget = widget.currentIndex() + 1
-        widget.setCurrentIndex(open_login_widget)
-        index = widget.indexOf(self.login)
+        login = LoginScreen()
+        self.widget.addWidget(login)
+        open_login_widget = self.widget.currentIndex() + 3 
+        self.widget.setCurrentIndex(open_login_widget)  
+        index = self.widget.indexOf(login)
         print("Login_account", index)
 
     # for create connection
     def create_account(self):
-        open_login_widget = widget.currentIndex() + 2
-        widget.setCurrentIndex(open_login_widget)
-        index = widget.indexOf(self.create)
+        create = CreateAccScreen()
+        self.widget.addWidget(create)
+        open_login_widget = self.widget.currentIndex() + 2  
+        self.widget.setCurrentIndex(open_login_widget) 
+        index = self.widget.indexOf(create)
         print("Create_account", index)
+
+    # for rating connection
+    def about_us_function(self):
+        self.rating_window = RatingWindow()
+        self.rating_window.show()
 
 
 class LoginScreen(QDialog):
 
     def __init__(self):
         super(LoginScreen, self).__init__()
-        loadUi("LYElog.ui", self)
+        loadUi(FILES_UI+"LYElog.ui", self)
         self.passwordd.setEchoMode(QtWidgets.QLineEdit.Password)
         self.loginn.clicked.connect(self.login_function)
         self.prev.clicked.connect(self.prev_function)
@@ -75,7 +88,7 @@ class LoginScreen(QDialog):
         current_index = widget.currentIndex()
         print("Index_prev", current_index)
         if current_index > 0:
-            return_welcome_widget = current_index - 1
+            return_welcome_widget = current_index - 3
             widget.setCurrentIndex(return_welcome_widget)
 
     def login_function(self):
@@ -98,7 +111,7 @@ class LoginScreen(QDialog):
                 global main_user
                 main_user = user
                 current_index = widget.currentIndex()
-                open_main_window = current_index + 2
+                open_main_window = current_index - 2
                 if current_index > 0:
                     widget.setCurrentIndex(open_main_window)
             else:
@@ -109,7 +122,7 @@ class CreateAccScreen(QMainWindow):
 
     def __init__(self):
         super(CreateAccScreen, self).__init__()
-        loadUi("LYEcreate.ui", self)
+        loadUi(FILES_UI+"LYEcreate.ui", self)
 
         self.passwordd.setEchoMode(QtWidgets.QLineEdit.Password)
         self.passwordd_2.setEchoMode(QtWidgets.QLineEdit.Password)
@@ -144,41 +157,18 @@ class CreateAccScreen(QMainWindow):
             conn.commit()
             conn.close()
 
-
-# profile LYE
-class Profile(QDialog):
-
+class RatingWindow(QMainWindow):
     def __init__(self):
-        super(Profile, self).__init__()
-        loadUi("profile.ui", self)
-        self.save_ch.clicked.connect(self.save_chh())
-        self.prevv.clicked.connect(self.prevfunction())
-        self.user_namename.setText(main_user)
+        super().__init__()
+        self.setWindowTitle("Info")
+        layout = QVBoxLayout()
+        hello_label = QLabel("About us:", self)
+        layout.addWidget(hello_label)
 
-    def prevfunction(self):
-        self.error_message1.clear()
-        current_index = widget.currentIndex()
-        if current_index > 0:
-            widget.setCurrentIndex(current_index - 2)
-
-    def save_chh(self):
-        user1 = self.firstname.text()
-        user2 = self.lastname.text()
-
-        if len(user1) == 0 or len(user2) == 0:
-            self.label_2.setText("Not all fields are filled in.")
-
-        else:
-            conn = sqlite3.connect("shop_data.db")
-            cur = conn.cursor()
-            user_info = [user1, user2]
-            cur.execute('INSERT INTO login_info_app (first_name, last_name) VALUES (?,?)', user_info)
-            print("Successfully save changes.")
-            conn.commit()
-            conn.close()
-            current_index = widget.currentIndex()
-            if current_index > 0:
-                widget.setCurrentIndex(current_index - 2)
+        central_widget = QWidget()
+        central_widget.setLayout(layout)
+        self.setCentralWidget(central_widget)
+        self.setWindowModality(Qt.ApplicationModal)
 
 
 def emotion_to_number(emotion):
@@ -196,21 +186,21 @@ def choose_playlist(number_):  # for connection with other members
 
     if number_ == 1:
         choose_em_playlist = {
-            "voila.mp3": "sad.jpg",
-            "sad_snow.mp3": "sad.jpg",
-            "sad_pretend.mp3": "sad.jpg"
+            MUSIC+"voila.mp3":IMAGE+ "sad.jpg",
+            MUSIC+"sad_snow.mp3": IMAGE+"sad.jpg",
+            MUSIC+"sad_pretend.mp3":IMAGE+ "sad.jpg"
         }
     elif number_ == 2:
         choose_em_playlist = {
-            "happy_love.mp3": "happy.jpg",
-            "sedaja.mp3": "happy.jpg",
-            "happy_ball.mp3": "happy.jpg"
+            MUSIC+"happy_love.mp3": IMAGE+"sad.jpg",
+            MUSIC+"sedaja.mp3": IMAGE+"happy.jpg",
+            MUSIC+"happy_ball.mp3":IMAGE+ "happy.jpg"
         }
     elif number_ == 3:
         choose_em_playlist = {
-            "aach.mp3": "neu.jpg",
-            "neu_sen.mp3": "neu.jpg",
-            "neu_shopen.mp3": "neu.jpg"
+            MUSIC+"aach.mp3": IMAGE+"neu.jpg",
+            MUSIC+"neu_sen.mp3":IMAGE+ "neu.jpg",
+            MUSIC+"neu_shopen.mp3":IMAGE+ "neu.jpg"
         }
 
 
@@ -287,12 +277,12 @@ class MainWindow(QWidget):
         super().__init__()
 
         self.tracks = {
-            "aach.mp3": "neu.jpg",
-            "sedaja.mp3": "happy.jpg",
-            "voila.mp3": "sad.jpg"
+            MUSIC+"aach.mp3": IMAGE+"neu.jpg",
+            MUSIC+"sedaja.mp3": IMAGE+"happy.jpg",
+            MUSIC+"voila.mp3": IMAGE+"sad.jpg"
         }
 
-        self.setGeometry(300, 300, 600, 400)
+        self.setGeometry(300, 300, 800, 600)
         self.setWindowTitle('LYE')
 
         self.current_index = 0  # for songs
@@ -313,8 +303,17 @@ class MainWindow(QWidget):
 
         # side buttons
 
-        self.create_tag("LYE")
-        self.create_profile_button("Your Lye")
+        # self.create_tag("LYE")
+
+        self.your_lye_button = QPushButton('Your Lye', self)
+        self.your_lye_button.setStyleSheet("""
+            QPushButton {
+                border-radius: 25px;
+                padding: 10px;
+            }
+        """)
+
+        self.your_lye_button.clicked.connect(self.open_new_window)
         self.initUI()
         self.set_theme(self.light_theme)
         self.show()
@@ -342,27 +341,12 @@ class MainWindow(QWidget):
             "}"
         )
 
-    def create_profile_button(self, text):
-        profile_button = QPushButton(text, self)
-        button_size = 65
-        profile_button.setGeometry(10, 60, button_size, 45)
-        profile_button.setStyleSheet(
-            "QPushButton {"
-            "    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #FFFFFF, stop:1 #AAAAAA);"
-            "    border: none;"
-            "    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);"
-            "    color: #222222;"
-            f"    border-radius: 15px;"
-            "}"
-            "QPushButton:hover {"
-            "    background-color: #87CEEB;"
-            "}"
-        )
+    def open_new_window(self):
+        self.new_window = Profile()
+        self.new_window.show()
 
-        profile_button.clicked.connect(self.fill)
 
     def initUI(self):
-
         self.initTracks()
 
         self.player = QMediaPlayer()
@@ -381,9 +365,9 @@ class MainWindow(QWidget):
         self.image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.layout.addWidget(self.image_label)
 
-        default_image = "aaa.jpg"
+        default_image = IMAGE+"aaa.jpg"
         pixmap = QPixmap(default_image)
-        pixmap = pixmap.scaled(400, 300, Qt.AspectRatioMode.KeepAspectRatio)
+        pixmap = pixmap.scaled(500, 400, Qt.AspectRatioMode.KeepAspectRatio)
         self.image_label.setPixmap(pixmap)
         self.image_label.adjustSize()
 
@@ -438,7 +422,7 @@ class MainWindow(QWidget):
 
         # for low panel
 
-        button_area.setFixedSize(550, 50)
+        button_area.setFixedSize(770, 70)
         self.layout.addWidget(button_area)
 
         # connect emotional
@@ -449,6 +433,7 @@ class MainWindow(QWidget):
 
         self.player = QMediaPlayer()
         self.player.mediaStatusChanged.connect(self.on_media_status_changed)
+
 
     def set_theme(self, light_theme):
         self.light_theme = light_theme
@@ -461,7 +446,7 @@ class MainWindow(QWidget):
 
         # sun icon
         self.theme_button = QPushButton(self)
-        self.theme_button.setIcon(QIcon("sun.jpg"))
+        self.theme_button.setIcon(QIcon(IMAGE+"sun.jpg"))
         self.theme_button.setIconSize(QSize(30, 30))
         self.theme_button.clicked.connect(self.change_theme)
         self.theme_button.setGeometry(QRect(self.width() - 40, 10, 30, 30))
@@ -469,13 +454,7 @@ class MainWindow(QWidget):
         self.theme_button.setStyleSheet("border-radius: 15px;")
 
     def change_theme(self):
-        print(self.layout)
         self.set_theme(not self.light_theme)
-
-    def fill(self):
-        print(1)
-        profile_dialog = Profile()
-        profile_dialog.show()
 
     def show_message(self):
         QMessageBox.about(self, "Message", "Added to favorites ❤ ")
@@ -510,6 +489,7 @@ class MainWindow(QWidget):
         self.player.setVolume(value)
 
     def initTracks(self):
+
         choose_playlist(self.current_playlist)
         self.playlist_index = {1: 0, 2: 0, 3: 0}
         self.tracks = choose_em_playlist
@@ -555,20 +535,19 @@ class MainWindow(QWidget):
         if image_filename:
             image_path = os.path.join(os.getcwd(), image_filename)
         else:
-            image_path = "lye.jpg"
+            image_path = IMAGE+"lye.jpg"
         pixmap = QPixmap(image_path)
-        pixmap = pixmap.scaled(400, 300, Qt.AspectRatioMode.KeepAspectRatio)
+        pixmap = pixmap.scaled(600, 500, Qt.AspectRatioMode.KeepAspectRatio)
         self.image_label.setPixmap(pixmap)
         self.image_label.adjustSize()
 
     def show_splash(self):
-        pixmap = QPixmap("LYEE.jpg")
-        pixmap = pixmap.scaled(600, 450)
-
+        pixmap = QPixmap(IMAGE+"LYEE.jpg")
+        pixmap = pixmap.scaled(791, 600)
         splash = QSplashScreen(pixmap)
         splash.setFixedSize(pixmap.size())
         splash.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
-        splash.move(splash.pos().x() - 20, splash.pos().y() - 35)
+        splash.move(splash.pos().x(), splash.pos().y() )
         splash.show()
 
         # add animation for splash-screen
@@ -584,7 +563,40 @@ class MainWindow(QWidget):
         splash.show()
         return splash
 
+# profile LYE
+class Profile(QDialog):
 
+    def __init__(self):
+        super().__init__()
+        uic.loadUi(FILES_UI+'fillprofile.ui', self)
+    #     self.save_ch.clicked.connect(self.save_chh())
+    #     self.prevv.clicked.connect(self.prevfunction())
+    #     self.user_namename.setText(main_user)
+
+    # def prevfunction(self):
+    #     self.error_message1.clear()
+    #     current_index = widget.currentIndex()
+    #     if current_index > 0:
+    #         widget.setCurrentIndex(current_index - 2)
+
+    # def save_chh(self):
+    #     user1 = self.firstname.text()
+    #     user2 = self.lastname.text()
+
+    #     if len(user1) == 0 or len(user2) == 0:
+    #         self.label_2.setText("Not all fields are filled in.")
+
+    #     else:
+    #         conn = sqlite3.connect("shop_data.db")
+    #         cur = conn.cursor()
+    #         user_info = [user1, user2]
+    #         cur.execute('INSERT INTO login_info_app (first_name, last_name) VALUES (?,?)', user_info)
+    #         print("Successfully save changes.")
+    #         conn.commit()
+    #         conn.close()
+    #         current_index = widget.currentIndex()
+    #         if current_index > 0:
+    #             widget.setCurrentIndex(current_index - 2)
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
@@ -592,15 +604,12 @@ if __name__ == '__main__':
     welcome = WelcomeScreen()
     widget.addWidget(welcome)
 
-    login = LoginScreen()
-    widget.addWidget(login)
-    create = CreateAccScreen()
-    widget.addWidget(create)
-
     mainWindow = MainWindow()
     widget.addWidget(mainWindow)
-    widget.setFixedHeight(450)
-    widget.setFixedWidth(600)
+    widget.setFixedWidth(791)
+    widget.setFixedHeight(600)
+    widget.setWindowFlags(Qt.WindowStaysOnTopHint)
+    widget.move(widget.pos().x()+335, widget.pos().y()+180)
     widget.show()
 
     splash = mainWindow.show_splash()
