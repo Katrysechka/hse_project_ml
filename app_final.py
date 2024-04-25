@@ -261,7 +261,7 @@ def choose_playlist(number_):  # for connection with other members
         }
     elif number_ == 2:
         choose_em_playlist = {
-            MUSIC+"happy_love.mp3": IMAGE+"sad.jpg",
+            MUSIC+"happy_love.mp3": IMAGE+"happy.jpg",
             MUSIC+"sedaja.mp3": IMAGE+"happy.jpg",
             MUSIC+"happy_ball.mp3":IMAGE+ "happy.jpg"
         }
@@ -290,10 +290,10 @@ class EmotionPanel(QWidget):
 
         if self.light_theme:
             self.label.setStyleSheet(
-                "font-family: 'Snell Roundhand', cursive; font-size: 25px; font-stretch: normal; color: #222222;")
+                "font-family: 'Snell Roundhand', cursive; font-size: 30px; font-stretch: normal; color: #222222;")
         else:
             self.label.setStyleSheet(
-                "font-family: 'Snell Roundhand', cursive; font-size: 25px; font-stretch: normal; color: #FFFFFF;")
+                "font-family: 'Snell Roundhand', cursive; font-size: 30px; font-stretch: normal; color: #FFFFFF;")
 
         def_layout.addWidget(self.label)
 
@@ -321,15 +321,15 @@ class EmotionPanel(QWidget):
 
     def set_sad(self):
         self.reset_colors()
-        self.btn_sad.setStyleSheet("background-color: #9370DB;")
+        self.btn_sad.setStyleSheet("background-color: #9370DB;; color: white;")
 
     def set_neu(self):
         self.reset_colors()
-        self.btn_neutral.setStyleSheet("background-color: #87CEEB;")
+        self.btn_neutral.setStyleSheet("background-color: #87CEEB;; color: white;")
 
     def set_happy(self):
         self.reset_colors()
-        self.btn_happy.setStyleSheet("background-color: #90EE90;")
+        self.btn_happy.setStyleSheet("background-color: #90EE90;; color: white;")
 
     def update_theme(self, light_theme):
         self.light_theme = light_theme
@@ -373,17 +373,24 @@ class MainWindow(QWidget):
         # side buttons
 
         # self.create_tag("LYE")
+        pixmap = QPixmap(IMAGE+"profileA-2.jpg")
+        icon = QIcon(pixmap)
 
-        self.your_lye_button = QPushButton('Your Lye', self)
+        self.your_lye_button = QPushButton(self)
         self.your_lye_button.setStyleSheet("""
             QPushButton {
-                border-radius: 25px;
-                padding: 10px;
+                border-radius: 50px;
+                padding: 0px;
+                color: white;
             }
         """)
 
+        self.your_lye_button.setIcon(icon)
+        self.your_lye_button.setIconSize(QSize(50, 50))
         self.your_lye_button.clicked.connect(self.open_new_window)
+        self.your_lye_button.move(15, 20)
         self.initUI()
+        
         self.set_theme(self.light_theme)
         self.show()
 
@@ -411,6 +418,7 @@ class MainWindow(QWidget):
         )
 
     def open_new_window(self):
+        print('sjhfgwjfrfjfberfgerf')
         self.new_window = Profile()
         self.new_window.show()
 
@@ -632,40 +640,109 @@ class MainWindow(QWidget):
         splash.show()
         return splash
 
-# profile LYE
 class Profile(QDialog):
+    def __init__(self):
+        super(Profile, self).__init__()
+        self.setGeometry(350, 273, 400, 200)
+        self.setWindowTitle("Profile")
+        layout = QVBoxLayout()
+
+        hello_label = QLabel("Listen Your Emotion:", self)
+        hello_label.setAlignment(QtCore.Qt.AlignCenter)
+        hello_label.setStyleSheet("font-size: 20px; font-family: 'Snell Roundhand'; font-weight: bold;")
+        hello_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+    
+        layout.addWidget(hello_label)
+        self.setWindowModality(Qt.ApplicationModal)
+        content_widget = QWidget()
+        
+        self.about_text_label = QLabel("")
+        self.about_text_label.setWordWrap(True) 
+        
+        # adding buttons
+        about_us_button = QPushButton("Показать профиль")
+        chat_support_button = QPushButton("Добавить информацию")
+
+        about_us_button.setAutoDefault(False) 
+        chat_support_button.setAutoDefault(False)  
+
+        # click-connect 
+        about_us_button.clicked.connect(self.show_about_us_text)
+        chat_support_button.clicked.connect(self.show_chat_support_text)
+        
+        # adding widgets into layout
+        layout.addWidget(about_us_button)
+        layout.addWidget(chat_support_button)
+        layout.addWidget(self.about_text_label)
+        self.setLayout(layout)
+
+        about_us_button.clicked.connect(lambda: self.set_button_color(about_us_button))
+        chat_support_button.clicked.connect(lambda: self.set_button_color(chat_support_button))
+        self.current_button = None
+
+    def set_button_color(self, button):
+        if self.current_button:
+            self.current_button.setStyleSheet("")
+            self.current_button.setStyleSheet("color: black;")
+        button.setStyleSheet("background-color: #778899; color: white;")
+        # update button
+        self.current_button = button
+        
+    def resizeEvent(self, event):
+        if self.size().height() == 500:
+            self.setGeometry(350, 273, 400, 500)  
+        elif self.size().height() == 100:
+            self.setGeometry(350, 273, 400, 100) 
+        elif self.size().height() == 300:
+            self.setGeometry(350, 273, 400, 300)       
+        event.accept()
+        
+    def show_about_us_text(self):
+        self.setGeometry(350, 273, 400, 500)
+        self.new_window = Profile2()
+        self.new_window.show()
+        
+    def show_chat_support_text(self):
+        self.setGeometry(350, 273, 400, 100) 
+        self.new_window = Profile1()
+        self.new_window.show()
+        
+# profile LYE
+class Profile1(QDialog):
 
     def __init__(self):
         super().__init__()
+        self.setWindowModality(Qt.ApplicationModal)
         uic.loadUi(FILES_UI+'fillprofile.ui', self)
-    #     self.save_ch.clicked.connect(self.save_chh())
-    #     self.prevv.clicked.connect(self.prevfunction())
-    #     self.user_namename.setText(main_user)
+        self.save_ch.clicked.connect(self.save_chh())
+        self.prevv.clicked.connect(self.prevfunction())
+        self.user_namename.setText(main_user)
 
-    # def prevfunction(self):
-    #     self.error_message1.clear()
-    #     current_index = widget.currentIndex()
-    #     if current_index > 0:
-    #         widget.setCurrentIndex(current_index - 2)
+    def prevfunction(self):
+        self.error_message1.clear()
+        current_index = widget.currentIndex()
+        if current_index > 0:
+            widget.setCurrentIndex(current_index - 2)
 
-    # def save_chh(self):
-    #     user1 = self.firstname.text()
-    #     user2 = self.lastname.text()
+    def save_chh(self):
+        user1 = self.firstname.text()
+        user2 = self.lastname.text()
 
-    #     if len(user1) == 0 or len(user2) == 0:
-    #         self.label_2.setText("Not all fields are filled in.")
+        if len(user1) == 0 or len(user2) == 0:
+            self.label_2.setText("Not all fields are filled in.")
 
-    #     else:
-    #         conn = sqlite3.connect("shop_data.db")
-    #         cur = conn.cursor()
-    #         user_info = [user1, user2]
-    #         cur.execute('INSERT INTO login_info_app (first_name, last_name) VALUES (?,?)', user_info)
-    #         print("Successfully save changes.")
-    #         conn.commit()
-    #         conn.close()
-    #         current_index = widget.currentIndex()
-    #         if current_index > 0:
-    #             widget.setCurrentIndex(current_index - 2)
+        else:
+            conn = sqlite3.connect("shop_data.db")
+            cur = conn.cursor()
+            user_info = [user1, user2]
+            cur.execute('INSERT INTO login_info_app (first_name, last_name) VALUES (?,?)', user_info)
+            print("Successfully save changes.")
+            conn.commit()
+            conn.close()
+            current_index = widget.currentIndex()
+            if current_index > 0:
+                widget.setCurrentIndex(current_index - 2)
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
