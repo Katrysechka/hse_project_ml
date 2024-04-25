@@ -19,7 +19,7 @@
   <property name="styleSheet">
    <string notr="true">
      QDialog {
-       background-image: url('./image_files/dd.jpg');
+       background-image: url('./image_files/LYE_log.jpg');
        background-repeat: no-repeat;
      }
    </string>
@@ -42,10 +42,10 @@
    <widget class="QPushButton" name="loginn">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>390</y>
-      <width>231</width>
-      <height>61</height>
+      <x>280</x>
+      <y>410</y>
+      <width>241</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -58,7 +58,7 @@ QPushButton#loginn {
 }
 
 QPushButton#loginn:hover {
-   border: 2px solid #9ACD32
+   border: 2px solid #AAAAAA
 }
 </string>
     </property>
@@ -69,8 +69,8 @@ QPushButton#loginn:hover {
    <widget class="QLineEdit" name="passwordd">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>320</y>
+      <x>280</x>
+      <y>350</y>
       <width>241</width>
       <height>41</height>
      </rect>
@@ -85,16 +85,33 @@ QLineEdit#passwordd {
 }
 
 QLineEdit#passwordd:hover {
-    border: 2px solid #FFDEAD;
+    border: 2px solid #AAAAAA;
 }
+</string>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Password</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>230</y>
+      <width>231</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"> font-size: 25px; font-stretch: normal;
 </string>
     </property>
    </widget>
    <widget class="QLineEdit" name="name">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>190</y>
+      <x>280</x>
+      <y>250</y>
       <width>241</width>
       <height>41</height>
      </rect>
@@ -109,8 +126,22 @@ QLineEdit#name {
 }
 
 QLineEdit#name:hover {
-    border: 2px solid #FFDEAD;
+    border: 2px solid #AAAAAA;
 }
+</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="error_message">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>390</y>
+      <width>241</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgba(255, 255, 255, 0);     
 </string>
     </property>
    </widget>
@@ -135,8 +166,8 @@ color:red;</string>
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>140</y>
+      <x>350</x>
+      <y>200</y>
       <width>231</width>
       <height>51</height>
      </rect>
@@ -153,8 +184,8 @@ font-family: &quot;century gothic&quot;;</string>
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>270</y>
+      <x>370</x>
+      <y>300</y>
       <width>231</width>
       <height>51</height>
      </rect>
@@ -184,6 +215,7 @@ QPushButton#prev {
     font-stretch: normal;
     border-radius: 10px;
     border: 0px;
+    background-color: white;
 }
 
 QPushButton#prev:hover {
@@ -201,8 +233,8 @@ QPushButton#prev:hover {
    <widget class="QLabel" name="error_message2">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>360</y>
+      <x>280</x>
+      <y>390</y>
       <width>241</width>
       <height>21</height>
      </rect>
@@ -222,8 +254,8 @@ color:green;</string>
     <rect>
      <x>3000</x>
      <y>170</y>
-     <width>20</width>
-     <height>20</height>
+     <width>800</width>
+     <height>36</height>
     </rect>
    </property>
   </widget>
