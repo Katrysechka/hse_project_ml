@@ -8,9 +8,9 @@ from PyQt5.QtWidgets import (QWidget, QPushButton, QApplication, QSlider, QStyle
                              QSplashScreen, QMainWindow, QFrame)
 from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QEasingCurve, QUrl, QDir
 from PyQt5.QtGui import QPixmap, QPalette, QColor, QPainter, QBitmap, QIcon
-from PyQt5.QtWidgets import QApplication, QDialog, QStackedWidget
+from PyQt5.QtWidgets import QApplication, QDialog, QStackedWidget, QCalendarWidget
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLineEdit, QLabel, QMessageBox, QScrollArea
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLineEdit, QLabel, QMessageBox, QScrollArea, QRadioButton
 
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLineEdit, QLabel, QMessageBox, QTabWidget, QWidget
 from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QUrl, QEasingCurve, QDir
@@ -373,27 +373,40 @@ class MainWindow(QWidget):
         # side buttons
 
         # self.create_tag("LYE")
-        pixmap = QPixmap(IMAGE+"profileA-2.jpg")
-        icon = QIcon(pixmap)
+        # pixmap = QPixmap(IMAGE+"profileA-2.jpg")
+        # icon = QIcon(pixmap)
 
-        self.your_lye_button = QPushButton(self)
+        # self.your_lye_button = QPushButton(self)
+        # self.your_lye_button.setStyleSheet("""
+        #     QPushButton {
+        #         border-radius: 50px;
+        #         padding: 0px;
+        #         color: white;
+        #     }
+        # """)
+
+        # self.your_lye_button.setIcon(icon)
+        # self.your_lye_button.setIconSize(QSize(50, 50))
+        # self.your_lye_button.clicked.connect(self.open_new_window)
+        # self.your_lye_button.move(15, 20)
+
+        self.your_lye_button = QPushButton("Your LYE", self)
         self.your_lye_button.setStyleSheet("""
             QPushButton {
-                border-radius: 50px;
-                padding: 0px;
+                border-radius: 25px;
+                padding: 10px 20px;
                 color: white;
+                background-color: #AAAAAA; 
             }
         """)
-
-        self.your_lye_button.setIcon(icon)
-        self.your_lye_button.setIconSize(QSize(50, 50))
         self.your_lye_button.clicked.connect(self.open_new_window)
-        self.your_lye_button.move(15, 20)
+
+    
         self.initUI()
         
         self.set_theme(self.light_theme)
         self.show()
-
+    
     # central location
     def center_screen(self):
         app_geometry = QApplication.desktop().availableGeometry()
@@ -643,7 +656,7 @@ class MainWindow(QWidget):
 class Profile(QDialog):
     def __init__(self):
         super(Profile, self).__init__()
-        self.setGeometry(350, 273, 400, 200)
+        self.setGeometry(350, 273, 400, 100)
         self.setWindowTitle("Profile")
         layout = QVBoxLayout()
 
@@ -660,24 +673,24 @@ class Profile(QDialog):
         self.about_text_label.setWordWrap(True) 
         
         # adding buttons
-        about_us_button = QPushButton("Показать профиль")
-        chat_support_button = QPushButton("Добавить информацию")
+        profile_button = QPushButton("Показать профиль")
+        add_profile_button = QPushButton("Добавить информацию")
 
-        about_us_button.setAutoDefault(False) 
-        chat_support_button.setAutoDefault(False)  
+        profile_button.setAutoDefault(False) 
+        add_profile_button.setAutoDefault(False)  
 
         # click-connect 
-        about_us_button.clicked.connect(self.show_about_us_text)
-        chat_support_button.clicked.connect(self.show_chat_support_text)
+        profile_button.clicked.connect(self.show_profile_text)
+        add_profile_button.clicked.connect(self.show_add_profile_text)
         
         # adding widgets into layout
-        layout.addWidget(about_us_button)
-        layout.addWidget(chat_support_button)
+        layout.addWidget(profile_button)
+        layout.addWidget(add_profile_button)
         layout.addWidget(self.about_text_label)
         self.setLayout(layout)
 
-        about_us_button.clicked.connect(lambda: self.set_button_color(about_us_button))
-        chat_support_button.clicked.connect(lambda: self.set_button_color(chat_support_button))
+        profile_button.clicked.connect(lambda: self.set_button_color(profile_button))
+        add_profile_button.clicked.connect(lambda: self.set_button_color(add_profile_button))
         self.current_button = None
 
     def set_button_color(self, button):
@@ -697,23 +710,122 @@ class Profile(QDialog):
             self.setGeometry(350, 273, 400, 300)       
         event.accept()
         
-    def show_about_us_text(self):
+    def show_profile_text(self):
         self.setGeometry(350, 273, 400, 500)
-        self.new_window = Profile2()
-        self.new_window.show()
-        
-    def show_chat_support_text(self):
-        self.setGeometry(350, 273, 400, 100) 
         self.new_window = Profile1()
         self.new_window.show()
         
+    def show_add_profile_text(self):
+        self.setGeometry(350, 273, 400, 100) 
+        self.new_window = Profile2()
+        self.new_window.show()
+
 # profile LYE
+class Profile2(QDialog):
+
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Profile")
+        self.setWindowModality(Qt.ApplicationModal)
+        self.resize(791, 300)
+
+        # profile information
+        self.name_edit = QLineEdit(self)
+        self.name_edit.setPlaceholderText("Name")
+        self.surname_edit = QLineEdit(self)
+        self.surname_edit.setPlaceholderText("Surname")
+
+        # hb
+        self.calendar = QCalendarWidget(self)
+
+        # profile adding
+        self.artist_edit = QLineEdit(self)
+        self.artist_edit.setPlaceholderText("Favorite performer")
+        self.song_edit = QLineEdit(self)
+        self.song_edit.setPlaceholderText("Favorite song")
+        self.genre_edit = QLineEdit(self)
+        self.genre_edit.setPlaceholderText("Favorite genre")
+
+        # Sex choose
+        self.gender_label = QLabel("Sex:", self)
+        self.female_radio = QRadioButton("female", self)
+        self.male_radio = QRadioButton("male", self)
+        self.gender_group = QHBoxLayout()
+        self.gender_group.addWidget(self.female_radio)
+        self.gender_group.addWidget(self.male_radio)
+
+        # Save changes
+        self.save_button = QPushButton("Save", self)
+        self.save_button.clicked.connect(self.save_profile)
+
+        # vertical layout
+        layout = QVBoxLayout(self)
+        layout.addWidget(QLabel("Name:", self))
+        layout.addWidget(self.name_edit)
+        layout.addWidget(QLabel("Surname:", self))
+        layout.addWidget(self.surname_edit)
+        layout.addWidget(QLabel("HB:", self))
+        layout.addWidget(self.calendar)
+        layout.addWidget(QLabel("Singer:", self))
+        layout.addWidget(self.artist_edit)
+        layout.addWidget(QLabel("Song:", self))
+        layout.addWidget(self.song_edit)
+        layout.addWidget(QLabel("Genre:", self))
+        layout.addWidget(self.genre_edit)
+        layout.addWidget(self.gender_label)
+        layout.addLayout(self.gender_group)
+        layout.addWidget(self.save_button)
+
+        # connection
+        self.conn = sqlite3.connect("show_data.db")
+        self.cur = self.conn.cursor()
+        self.load_profile()
+
+    def load_profile(self):
+        self.cur.execute("SELECT * FROM login_info")
+        user_data = self.cur.fetchone()
+
+        if user_data:
+            self.name_edit.setText(user_data[1])
+            self.surname_edit.setText(user_data[2])
+            self.calendar.setSelectedDate(user_data[3])
+            self.artist_edit.setText(user_data[4])
+            self.song_edit.setText(user_data[5])
+            self.genre_edit.setText(user_data[6])
+            gender = user_data[7]
+            if gender == 0:
+                self.female_radio.setChecked(True)
+            elif gender == 1:
+                self.male_radio.setChecked(True)
+
+    def save_profile(self):
+        name = self.name_edit.text()
+        surname = self.surname_edit.text()
+        birthday = self.calendar.selectedDate().toString("yyyy-MM-dd")
+        favorite_artist = self.artist_edit.text()
+        favorite_song = self.song_edit.text()
+        favorite_genre = self.genre_edit.text()
+
+        gender = 0 if self.female_radio.isChecked() else 1
+
+    # id from another table
+        self.cur.execute("SELECT username FROM login_info LIMIT 1")
+        id = self.cur.fetchone()[0]
+
+    # add changes
+        self.cur.execute("INSERT INTO profile (id, name, surname, birthday, favorite_artist, favorite_song, favorite_genre, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                     (id, name, surname, birthday, favorite_artist, favorite_song, favorite_genre, gender))
+        self.conn.commit()
+        QMessageBox.information(self, "Сохранено", "Данные профиля сохранены в базе данных")
+
+
+# add_profile LYE
 class Profile1(QDialog):
 
     def __init__(self):
         super().__init__()
         self.setWindowModality(Qt.ApplicationModal)
-        uic.loadUi(FILES_UI+'fillprofile.ui', self)
+        uic.loadUi(FILES_UI+'addprofile.ui', self)
         self.save_ch.clicked.connect(self.save_chh())
         self.prevv.clicked.connect(self.prevfunction())
         self.user_namename.setText(main_user)
