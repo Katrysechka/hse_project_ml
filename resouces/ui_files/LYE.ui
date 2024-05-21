@@ -19,7 +19,7 @@
   <property name="styleSheet">
    <string notr="true">
      QDialog {
-       background-image: url('./image_files/LYEfinal.jpg');
+       background-image: url('./resources/image_files/LYEfinal.jpg');
        background-repeat: no-repeat;
        
      }

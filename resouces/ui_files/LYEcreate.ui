@@ -22,7 +22,7 @@
   <property name="styleSheet">
    <string notr="true">
      QMainWindow {
-       background-image: url('./image_files/LYE_log.jpg');
+       background-image: url('./resources/image_files/LYE_log.jpg');
        background-repeat: no-repeat;
      }
    </string>
