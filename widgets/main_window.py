@@ -35,12 +35,7 @@ class MainWindow(QWidget):
 
         self.center_screen()
 
-        # side buttons
-
-        self.create_tag("LYE")
-        pixmap = QPixmap(IMAGE+"key.jpg")
-        icon = QIcon(pixmap)
-
+        #profile_button
         self.your_lye_button = QPushButton(self)
         self.your_lye_button.setStyleSheet("""
             QPushButton {
@@ -50,8 +45,7 @@ class MainWindow(QWidget):
             }
         """)
 
-        self.your_lye_button.setIcon(icon)
-        self.your_lye_button.setIconSize(QSize(50, 5))
+
         self.your_lye_button.clicked.connect(self.open_new_window)
         self.your_lye_button.move(30, 20)
 
@@ -94,18 +88,30 @@ class MainWindow(QWidget):
         font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
         
         font_awesome = QFont(font_family)
-        # font_awesome.setFamily("FontAwesome")
         font_awesome.setPixelSize(32)
         font_awesome.setHintingPreference(QFont.HintingPreference.PreferNoHinting)
 
         self.player = QMediaPlayer()
         self.layout = QVBoxLayout()
 
+        # top buttons
         self.top_buttons = QHBoxLayout()
 
+        # add a text label
+        self.treble_clef_label = QLabel("\U0001D11E LYE", self)
+        self.treble_clef_label.setFont(QFont("cursive", 30))
+        self.treble_clef_label.setStyleSheet("""
+            QLabel {
+                font-size: 25px;
+                # background: transparent;
+                border: 25px solid transparent;
+                color: #AAAAAA; 
+            }
+        """)
+
+        #add a profile button
         self.your_lye_button = QPushButton("\uf007", self)
         self.your_lye_button.setFont(font_awesome)
-        self.your_lye_button.move(10, 10)
         self.your_lye_button.setFixedSize(24, 24)
         self.your_lye_button.setStyleSheet("""
             QPushButton {
@@ -125,7 +131,9 @@ class MainWindow(QWidget):
         self.theme_button.move(self.width() - 40, 10)
         self.theme_button.setStyleSheet("border-radius: 15px;")
 
+        #add all buttons
         self.top_buttons.addWidget(self.your_lye_button)
+        self.top_buttons.addWidget(self.treble_clef_label)
         self.top_buttons.addStretch()
         self.top_buttons.addWidget(self.theme_button)
 
@@ -138,7 +146,7 @@ class MainWindow(QWidget):
         musicControl = QHBoxLayout()
 
         self.layout.addLayout(self.top_buttons)
-        self.layout.addLayout(self.top_buttons)
+        
 
         # images
         self.image_label = QLabel()
@@ -274,7 +282,7 @@ class MainWindow(QWidget):
         '''
 
         # emotional buttons
-        self.emotion_panel = EmotionPanel()  # Define emotion_panel as an instance attribute
+        self.emotion_panel = EmotionPanel()  
         self.layout.addWidget(self.emotion_panel)
 
         # for low panel
@@ -288,6 +296,15 @@ class MainWindow(QWidget):
         self.emotion_panel.btn_neutral.clicked.connect(self.happy_playlist)
         self.emotion_panel.btn_happy.clicked.connect(self.neutral_playlist)
 
+        self.emotion_panel.btn_classic.clicked.connect(self.classic_playlist)
+        self.emotion_panel.btn_pop.clicked.connect(self.pop_playlist)
+        self.emotion_panel.btn_rock.clicked.connect(self.rock_playlist)
+        self.emotion_panel.btn_films.clicked.connect(self.films_playlist)
+        self.emotion_panel.btn_kids.clicked.connect(self.kids_playlist)
+
+        self.emotion_panel.btn_work.clicked.connect(self.work_playlist)
+        self.emotion_panel.btn_rest.clicked.connect(self.rest_playlist)
+        self.emotion_panel.btn_sport.clicked.connect(self.sport_playlist)
         self.player = QMediaPlayer()
         self.player.mediaStatusChanged.connect(self.on_media_status_changed)
         self.player.positionChanged.connect(self.on_position_updated)
@@ -313,10 +330,15 @@ class MainWindow(QWidget):
                 color: {opposite_hex} 
             }}
         """)
-
-        # sun icon
+        self.treble_clef_label.setStyleSheet(f"""
+            QPushButton {{
+                font-size: 20px;
+                background: transparent;
+                border: 1px solid transparent;
+                color: {opposite_hex} 
+            }}
+        """)
         
-
     def change_theme(self):
         self.set_theme(not self.light_theme)
 
@@ -325,7 +347,6 @@ class MainWindow(QWidget):
 
     def set_playlist(self, playlist):  # for connection words and numbers
         if playlist == 1:
-            
             self.current_playlist = 1
             self.tracks = choose_playlist(1)
         elif playlist == 2:
@@ -334,6 +355,31 @@ class MainWindow(QWidget):
         elif playlist == 3:
             self.current_playlist = 3
             self.tracks = choose_playlist(3)
+        elif playlist == 4:
+            self.current_playlist = 4
+            self.tracks = choose_playlist(4)   
+        elif playlist == 5:
+            self.current_playlist = 5
+            self.tracks = choose_playlist(5)  
+        elif playlist == 6:
+            self.current_playlist = 6
+            self.tracks = choose_playlist(6)       
+        elif playlist == 7:
+            self.current_playlist = 7
+            self.tracks = choose_playlist(7)   
+        elif playlist == 8:
+            self.current_playlist = 8
+            self.tracks = choose_playlist(8)  
+        elif playlist == 9:
+            self.current_playlist = 9
+            self.tracks = choose_playlist(9)   
+        elif playlist == 10:
+            self.current_playlist = 10
+            self.tracks = choose_playlist(10)     
+        elif playlist == 11:
+            self.current_playlist = 11
+            self.tracks = choose_playlist(11)
+
         self.current_index = self.playlist_index.get(self.current_playlist,
                                                      0)  # index of the current track in this playlist
         self.open_file()
@@ -352,6 +398,31 @@ class MainWindow(QWidget):
 
     def happy_playlist(self):
         self.set_playlist(3)
+
+    def classic_playlist(self):
+        self.set_playlist(4)
+
+    def pop_playlist(self):
+        self.set_playlist(5)     
+
+    def rock_playlist(self):
+        self.set_playlist(6)   
+
+    def kids_playlist(self):
+        self.set_playlist(7) 
+
+    def films_playlist(self):
+        self.set_playlist(8)    
+
+    def work_playlist(self):
+        self.set_playlist(9) 
+
+    def rest_playlist(self):
+        self.set_playlist(10)
+
+    def sport_playlist(self):
+        self.set_playlist(11)
+
 
     def change_volume(self, value):
         self.player.setVolume(value)

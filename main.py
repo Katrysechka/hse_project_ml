@@ -1,0 +1,57 @@
+import sys
+from PyQt5.QtWidgets import QApplication, QStackedWidget
+from PyQt5.QtCore import Qt, QTimer
+
+from widgets.welcome_screen import WelcomeScreen
+from widgets.main_window import MainWindow
+from widgets.login_screen import LoginScreen
+from widgets.create_acc_screen import CreateAccScreen
+from widgets.profile_info_widget import ProfileInfoWidget
+from widgets.profile_edit_widget import ProfileEditWidget
+
+from settings import WIDGETS
+from db.database import database
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+
+    widget = QStackedWidget()
+    
+    welcome = WelcomeScreen(widget)
+    login = LoginScreen(widget)
+    create_acc = CreateAccScreen(widget)
+    main_window = MainWindow(widget)
+    profile_info = ProfileInfoWidget(widget)
+    profile_edit = ProfileEditWidget(widget)
+
+    WIDGETS['welcome'] = welcome
+    WIDGETS['login'] = login
+    WIDGETS['create_acc'] = create_acc
+    WIDGETS['main_window'] = main_window
+    WIDGETS['profile_info'] = profile_info
+    WIDGETS['profile_edit'] = profile_edit
+
+    widget.addWidget(welcome)
+    widget.addWidget(login)
+    widget.addWidget(create_acc)
+    widget.addWidget(main_window)
+    widget.addWidget(profile_info)
+    widget.addWidget(profile_edit)
+    
+    widget.move(widget.pos().x()+335, widget.pos().y()+180)
+    widget.setWindowFlags(Qt.WindowStaysOnTopHint)
+    widget.setFixedWidth(791)
+    widget.setFixedHeight(600)
+    widget.show()
+
+    splash = main_window.show_splash()
+    splash.show()
+
+    QTimer.singleShot(1500, lambda: widget.setCurrentIndex(-1))
+    try:
+        sys.exit(app.exec_())
+    except:
+        print("Exiting")
+
+    database.close()
