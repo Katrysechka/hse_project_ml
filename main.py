@@ -10,7 +10,7 @@ from widgets.profile_info_widget import ProfileInfoWidget
 from widgets.profile_edit_widget import ProfileEditWidget
 
 from settings import WIDGETS
-# from db.database import database
+from db.database import database
 
 
 if __name__ == '__main__':

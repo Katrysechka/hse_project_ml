@@ -305,7 +305,6 @@ class MainWindow(QWidget):
         self.emotion_panel.btn_work.clicked.connect(self.work_playlist)
         self.emotion_panel.btn_rest.clicked.connect(self.rest_playlist)
         self.emotion_panel.btn_sport.clicked.connect(self.sport_playlist)
-        self.player = QMediaPlayer()
         self.player.mediaStatusChanged.connect(self.on_media_status_changed)
         self.player.positionChanged.connect(self.on_position_updated)
         self.player.durationChanged.connect(self.on_duration_updated)
