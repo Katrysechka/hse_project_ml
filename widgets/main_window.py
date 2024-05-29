@@ -2,7 +2,6 @@ import os
 from settings import MUSIC, IMAGE, FONT_AWESOME, WIDGETS
 
 from helpers import choose_playlist, seconds_to_str
-# from widgets.profile_widget import ProfileWidget
 from widgets.emotion_panel import EmotionPanel
 
 from PyQt5.QtWidgets import QWidget, QPushButton, QApplication, QLabel, QVBoxLayout, \
