@@ -5,7 +5,7 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 import sqlite3, asyncio
 
-import tg_bot.keyboards as kb рр
+import tg_bot.keyboards as kb
 router = Router()
 
 class Request(StatesGroup):

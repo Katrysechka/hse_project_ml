@@ -13,10 +13,9 @@ class CreateAccScreen(QMainWindow):
     def __init__(self, stack: QStackedWidget):
         super(CreateAccScreen, self).__init__()
         loadUi(FILES_UI + "LYEcreate.ui", self)
-        
         self.widget = stack
-
-
+        
+        # buttons function 
         self.passwordd.setEchoMode(QLineEdit.Password)
         self.passwordd_2.setEchoMode(QLineEdit.Password)
         self.signup.clicked.connect(self.signupfunction)
