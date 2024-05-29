@@ -1,6 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QSpacerItem, QSizePolicy
 
+
 class EmotionPanel(QWidget):
     def __init__(self, light_theme=True):
         super().__init__()
@@ -27,7 +28,6 @@ class EmotionPanel(QWidget):
                 "font-family: 'Snell Roundhand', cursive; font-size: 30px; font-stretch: normal; color: #FFFFFF;")
 
         self.def_layout.addWidget(self.label)
-
 
         self.btn_show_genres = QPushButton('Genres')
         self.btn_show_genres.setCheckable(True)
@@ -89,7 +89,7 @@ class EmotionPanel(QWidget):
         self.genre_layout.addWidget(self.btn_rock)
         self.genre_layout.addWidget(self.btn_pop)
         self.genre_layout.addWidget(self.btn_kids)
-        
+
         self.genre_widget = QWidget()
         self.genre_widget.setLayout(self.genre_layout)
         self.genre_widget.setVisible(False)
@@ -97,7 +97,7 @@ class EmotionPanel(QWidget):
         self.def_layout.addWidget(self.genre_widget)
 
         # Action buttons layout
-        self.action_layout = QHBoxLayout()  
+        self.action_layout = QHBoxLayout()
 
         # "For Action" buttons
         self.btn_work = QPushButton('Work')
@@ -128,7 +128,7 @@ class EmotionPanel(QWidget):
         self.btn_rock.clicked.connect(self.set_rock)
         self.btn_kids.clicked.connect(self.set_kids)
         self.btn_films.clicked.connect(self.set_films)
-        
+
         # touch response for actions 
         self.btn_work.clicked.connect(self.set_work)
         self.btn_rest.clicked.connect(self.set_rest)
@@ -183,7 +183,7 @@ class EmotionPanel(QWidget):
 
     def set_films(self):
         self.reset_colors()
-        self.btn_films.setStyleSheet("background-color: #BF5D30; color: white;") 
+        self.btn_films.setStyleSheet("background-color: #BF5D30; color: white;")
 
     def set_rock(self):
         self.reset_colors()

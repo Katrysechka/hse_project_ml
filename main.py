@@ -12,12 +12,11 @@ from widgets.profile_edit_widget import ProfileEditWidget
 from settings import WIDGETS
 from db.database import database
 
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     widget = QStackedWidget()
-    
+
     welcome = WelcomeScreen(widget)
     login = LoginScreen(widget)
     create_acc = CreateAccScreen(widget)
@@ -38,8 +37,8 @@ if __name__ == '__main__':
     widget.addWidget(main_window)
     widget.addWidget(profile_info)
     widget.addWidget(profile_edit)
-    
-    widget.move(widget.pos().x()+335, widget.pos().y()+180)
+
+    widget.move(widget.pos().x() + 335, widget.pos().y() + 180)
     widget.setWindowFlags(Qt.WindowStaysOnTopHint)
     widget.setFixedWidth(791)
     widget.setFixedHeight(600)

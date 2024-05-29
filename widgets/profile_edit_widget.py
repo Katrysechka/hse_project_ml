@@ -1,11 +1,10 @@
-import sqlite3
-
 from PyQt5.QtWidgets import QPushButton, QDialog, QLabel, QVBoxLayout, QMessageBox, \
-                            QLineEdit, QCalendarWidget, QRadioButton, QHBoxLayout, QStackedWidget
+    QLineEdit, QCalendarWidget, QRadioButton, QHBoxLayout, QStackedWidget
 from PyQt5.QtCore import Qt
 
 from db.database import database
 from settings import USER_INFO, WIDGETS
+
 
 class ProfileEditWidget(QDialog):
 
@@ -48,7 +47,7 @@ class ProfileEditWidget(QDialog):
 
         self.back_button = QPushButton('Back', self)
         self.back_button.clicked.connect(self.get_back)
-        
+
         buttons = QHBoxLayout()
         buttons.addStretch()
         buttons.addWidget(self.back_button)
@@ -70,7 +69,7 @@ class ProfileEditWidget(QDialog):
         layout.addWidget(self.genre_edit)
         layout.addWidget(self.gender_label)
         layout.addLayout(self.gender_group)
-        
+
         layout.addLayout(buttons)
 
         # connection
@@ -80,14 +79,14 @@ class ProfileEditWidget(QDialog):
         profile = database.get_profile_by_username(USER_INFO['username'])
 
         if profile:
-            
+
             self.name_edit.setText(profile.first_name or '')
             self.surname_edit.setText(profile.last_name or '')
             if profile.birthday:
                 self.calendar.setSelectedDate(profile.birthday)
-            
+
             self.artist_edit.setText(profile.fav_artist or '')
-            
+
             self.song_edit.setText(profile.fav_song or '')
             self.genre_edit.setText(profile.fav_genre or '')
             gender = profile.gender
@@ -98,7 +97,7 @@ class ProfileEditWidget(QDialog):
 
     def save_profile(self):
         profile = database.get_profile_by_username(USER_INFO['username'])
-        
+
         name = self.name_edit.text()
         surname = self.surname_edit.text()
         birthday = self.calendar.selectedDate().toString("yyyy-MM-dd")
@@ -115,15 +114,15 @@ class ProfileEditWidget(QDialog):
         profile.fav_song = favorite_song
         profile.fav_genre = favorite_genre
         profile.gender = gender
-        
+
         database.edit_profile(profile.id, profile)
-        
+
         QMessageBox.information(self, 'Saved', 'Profile saved successfully!')
 
     def get_back(self):
         reply = QMessageBox.question(self, 'Message',
-            "Do you want to leave without saving unsaved data?", QMessageBox.Yes |
-            QMessageBox.No, QMessageBox.No)
+                                     "Do you want to leave without saving unsaved data?", QMessageBox.Yes |
+                                     QMessageBox.No, QMessageBox.No)
 
         if reply == QMessageBox.Yes:
             WIDGETS['profile_info'].load_profile()

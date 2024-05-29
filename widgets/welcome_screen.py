@@ -6,13 +6,14 @@ from widgets.rating_window import RatingWindow
 
 from settings import WIDGETS
 
+
 class WelcomeScreen(QDialog):
     def __init__(self, stack: QStackedWidget):
         super(WelcomeScreen, self).__init__()
-        
+
         loadUi(FILES_UI + "LYE.ui", self)
         self.widget = stack
-        
+
         self.login.clicked.connect(self.login_account)
         self.create.clicked.connect(self.create_account)
         self.about_us.clicked.connect(self.about_us_function)

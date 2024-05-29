@@ -5,11 +5,12 @@ from helpers import choose_playlist, seconds_to_str
 # from widgets.profile_widget import ProfileWidget
 from widgets.emotion_panel import EmotionPanel
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QApplication, QLabel, QVBoxLayout,\
-                            QHBoxLayout, QSlider, QStyle, QMessageBox, QSplashScreen, QStackedWidget
+from PyQt5.QtWidgets import QWidget, QPushButton, QApplication, QLabel, QVBoxLayout, \
+    QHBoxLayout, QSlider, QStyle, QMessageBox, QSplashScreen, QStackedWidget
 from PyQt5.QtGui import QPixmap, QColor, QPalette, QIcon, QFont, QFontDatabase
 from PyQt5.QtCore import QPropertyAnimation, QEasingCurve, QTimer, Qt, QUrl, QRect, QSize
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+from PyQt5.QtMultimedia import QAudioOutput, QMediaPlayer, QMediaContent
+
 
 class MainWindow(QWidget):
     def __init__(self, stack: QStackedWidget):
@@ -18,9 +19,9 @@ class MainWindow(QWidget):
         self.widget = stack
 
         self.tracks = {
-            MUSIC+"aach.mp3": IMAGE+"neu.jpg",
-            MUSIC+"sedaja.mp3": IMAGE+"happy.jpg",
-            MUSIC+"voila.mp3": IMAGE+"sad.jpg"
+            MUSIC + "aach.mp3": IMAGE + "neu.jpg",
+            MUSIC + "sedaja.mp3": IMAGE + "happy.jpg",
+            MUSIC + "voila.mp3": IMAGE + "sad.jpg"
         }
 
         self.setGeometry(300, 300, 800, 600)
@@ -35,7 +36,7 @@ class MainWindow(QWidget):
 
         self.center_screen()
 
-        #profile_button
+        # profile_button
         self.your_lye_button = QPushButton(self)
         self.your_lye_button.setStyleSheet("""
             QPushButton {
@@ -45,15 +46,14 @@ class MainWindow(QWidget):
             }
         """)
 
-
         self.your_lye_button.clicked.connect(self.open_new_window)
         self.your_lye_button.move(30, 20)
 
         self.initUI()
-        
+
         self.set_theme(self.light_theme)
         self.show()
-    
+
     # central location
     def center_screen(self):
         app_geometry = QApplication.desktop().availableGeometry()
@@ -83,16 +83,16 @@ class MainWindow(QWidget):
 
     def initUI(self):
         self.initTracks()
-        
+
         font_id = QFontDatabase.addApplicationFont(FONT_AWESOME)
         font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
-        
+
         font_awesome = QFont(font_family)
         font_awesome.setPixelSize(32)
         font_awesome.setHintingPreference(QFont.HintingPreference.PreferNoHinting)
 
-        self.player = QMediaPlayer()
         self.layout = QVBoxLayout()
+        self.player = QMediaPlayer()
 
         # top buttons
         self.top_buttons = QHBoxLayout()
@@ -109,7 +109,7 @@ class MainWindow(QWidget):
             }
         """)
 
-        #add a profile button
+        # add a profile button
         self.your_lye_button = QPushButton("\uf007", self)
         self.your_lye_button.setFont(font_awesome)
         self.your_lye_button.setFixedSize(24, 24)
@@ -131,7 +131,7 @@ class MainWindow(QWidget):
         self.theme_button.move(self.width() - 40, 10)
         self.theme_button.setStyleSheet("border-radius: 15px;")
 
-        #add all buttons
+        # add all buttons
         self.top_buttons.addWidget(self.your_lye_button)
         self.top_buttons.addWidget(self.treble_clef_label)
         self.top_buttons.addStretch()
@@ -146,14 +146,13 @@ class MainWindow(QWidget):
         musicControl = QHBoxLayout()
 
         self.layout.addLayout(self.top_buttons)
-        
 
         # images
         self.image_label = QLabel()
         self.image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.layout.addWidget(self.image_label)
 
-        default_image = IMAGE+"aaa.jpg"
+        default_image = IMAGE + "aaa.jpg"
         pixmap = QPixmap(default_image)
         pixmap = pixmap.scaled(500, 400, Qt.AspectRatioMode.KeepAspectRatio)
         self.image_label.setPixmap(pixmap)
@@ -168,15 +167,15 @@ class MainWindow(QWidget):
         play_btn.clicked.connect(self.play_audio)
         play_btn.setFont(font_awesome)
         play_btn.setStyleSheet('font-size: 27px')
-        
+
         next_btn = QPushButton('\uf050', clicked=self.next_m)
         next_btn.setFont(font_awesome)
         next_btn.setStyleSheet('font-size: 18px')
-        
+
         prev_btn = QPushButton('\uf049', clicked=self.prev_m)
         prev_btn.setFont(font_awesome)
         prev_btn.setStyleSheet('font-size: 18px')
-        
+
         stop_btn = QPushButton('\uf04c')
         stop_btn.clicked.connect(self.pause_audio)
         stop_btn.setFont(font_awesome)
@@ -185,7 +184,8 @@ class MainWindow(QWidget):
         self.heart_button = QPushButton("\uf004")
         self.heart_button.setFont(font_awesome)
         self.heart_button.setToolTip("Add to favorites")
-        self.heart_button.setStyleSheet("font-size: 18px; color: red; background: transparent; border: 1px solid transparent;")
+        self.heart_button.setStyleSheet(
+            "font-size: 18px; color: red; background: transparent; border: 1px solid transparent;")
         self.heart_button.clicked.connect(self.show_message)
 
         slider_style = """
@@ -259,7 +259,7 @@ class MainWindow(QWidget):
         controls_layout = QHBoxLayout()
         controls_layout.setSpacing(10)
         # controls_layout.addStretch()
-        
+
         controls_layout.addSpacing(10)
         controls_layout.addWidget(self.position_label)
         controls_layout.addWidget(self.position_slider, 2)
@@ -267,7 +267,7 @@ class MainWindow(QWidget):
         controls_layout.addSpacing(20)
         controls_layout.addWidget(vol_icon)
         controls_layout.addWidget(self.volume_slider)
-        controls_layout.addSpacing(10)        
+        controls_layout.addSpacing(10)
         # controls_layout.addStretch()
 
         # Desired order for arrangement
@@ -282,7 +282,7 @@ class MainWindow(QWidget):
         '''
 
         # emotional buttons
-        self.emotion_panel = EmotionPanel()  
+        self.emotion_panel = EmotionPanel()
         self.layout.addWidget(self.emotion_panel)
 
         # for low panel
@@ -290,7 +290,7 @@ class MainWindow(QWidget):
         button_area.setFixedSize(770, 70)
         self.layout.addLayout(controls_layout)
         self.layout.addWidget(button_area)
-        
+
         # connect emotional
         self.emotion_panel.btn_sad.clicked.connect(self.sad_playlist)
         self.emotion_panel.btn_neutral.clicked.connect(self.happy_playlist)
@@ -305,6 +305,7 @@ class MainWindow(QWidget):
         self.emotion_panel.btn_work.clicked.connect(self.work_playlist)
         self.emotion_panel.btn_rest.clicked.connect(self.rest_playlist)
         self.emotion_panel.btn_sport.clicked.connect(self.sport_playlist)
+        # self.player = QMediaPlayer()
         self.player.mediaStatusChanged.connect(self.on_media_status_changed)
         self.player.positionChanged.connect(self.on_position_updated)
         self.player.durationChanged.connect(self.on_duration_updated)
@@ -318,7 +319,7 @@ class MainWindow(QWidget):
         c.setColor(QPalette.Window, color)
         self.setPalette(c)
         self.setAutoFillBackground(True)
-        
+
         self.emotion_panel.update_theme(self.light_theme)
 
         self.your_lye_button.setStyleSheet(f"""
@@ -337,7 +338,7 @@ class MainWindow(QWidget):
                 color: {opposite_hex} 
             }}
         """)
-        
+
     def change_theme(self):
         self.set_theme(not self.light_theme)
 
@@ -356,25 +357,25 @@ class MainWindow(QWidget):
             self.tracks = choose_playlist(3)
         elif playlist == 4:
             self.current_playlist = 4
-            self.tracks = choose_playlist(4)   
+            self.tracks = choose_playlist(4)
         elif playlist == 5:
             self.current_playlist = 5
-            self.tracks = choose_playlist(5)  
+            self.tracks = choose_playlist(5)
         elif playlist == 6:
             self.current_playlist = 6
-            self.tracks = choose_playlist(6)       
+            self.tracks = choose_playlist(6)
         elif playlist == 7:
             self.current_playlist = 7
-            self.tracks = choose_playlist(7)   
+            self.tracks = choose_playlist(7)
         elif playlist == 8:
             self.current_playlist = 8
-            self.tracks = choose_playlist(8)  
+            self.tracks = choose_playlist(8)
         elif playlist == 9:
             self.current_playlist = 9
-            self.tracks = choose_playlist(9)   
+            self.tracks = choose_playlist(9)
         elif playlist == 10:
             self.current_playlist = 10
-            self.tracks = choose_playlist(10)     
+            self.tracks = choose_playlist(10)
         elif playlist == 11:
             self.current_playlist = 11
             self.tracks = choose_playlist(11)
@@ -385,7 +386,7 @@ class MainWindow(QWidget):
 
     def pause_audio(self):
         self.player.pause()
-        
+
     def play_audio(self):
         self.player.play()
 
@@ -402,19 +403,19 @@ class MainWindow(QWidget):
         self.set_playlist(4)
 
     def pop_playlist(self):
-        self.set_playlist(5)     
+        self.set_playlist(5)
 
     def rock_playlist(self):
-        self.set_playlist(6)   
+        self.set_playlist(6)
 
     def kids_playlist(self):
-        self.set_playlist(7) 
+        self.set_playlist(7)
 
     def films_playlist(self):
-        self.set_playlist(8)    
+        self.set_playlist(8)
 
     def work_playlist(self):
-        self.set_playlist(9) 
+        self.set_playlist(9)
 
     def rest_playlist(self):
         self.set_playlist(10)
@@ -422,10 +423,9 @@ class MainWindow(QWidget):
     def sport_playlist(self):
         self.set_playlist(11)
 
-
     def change_volume(self, value):
         self.player.setVolume(value)
-    
+
     def change_position(self, value):
         self.player.setPosition(int(self.player.duration() * value / 1000))
 
@@ -435,9 +435,9 @@ class MainWindow(QWidget):
     def on_position_updated(self, value):
         if not self.player.duration():
             return
-        
+
         time = int(value / self.player.duration() * 1000)
-        
+
         self.position_slider.blockSignals(True)
         self.position_label.setText(seconds_to_str(value / 1000))
         self.position_slider.setValue(time)
@@ -488,19 +488,19 @@ class MainWindow(QWidget):
         if image_filename:
             image_path = os.path.join(os.getcwd(), image_filename)
         else:
-            image_path = IMAGE+"lye.jpg"
+            image_path = IMAGE + "lye.jpg"
         pixmap = QPixmap(image_path)
         pixmap = pixmap.scaled(600, 500, Qt.AspectRatioMode.KeepAspectRatio)
         self.image_label.setPixmap(pixmap)
         self.image_label.adjustSize()
 
     def show_splash(self):
-        pixmap = QPixmap(IMAGE+"LYEE.jpg")
+        pixmap = QPixmap(IMAGE + "LYEE.jpg")
         pixmap = pixmap.scaled(791, 600)
         splash = QSplashScreen(pixmap)
         splash.setFixedSize(pixmap.size())
         splash.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
-        splash.move(splash.pos().x(), splash.pos().y() )
+        splash.move(splash.pos().x(), splash.pos().y())
         splash.show()
 
         # add animation for splash-screen
@@ -514,5 +514,5 @@ class MainWindow(QWidget):
 
         QTimer.singleShot(1500, splash.close)
         splash.show()
-        
+
         return splash

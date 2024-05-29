@@ -1,5 +1,6 @@
 from settings import PLAYLISTS
 
+
 def choose_playlist(number_):
     if number_ == 1:
         return PLAYLISTS['sad']
@@ -23,11 +24,12 @@ def choose_playlist(number_):
         return PLAYLISTS['rest']
     elif number_ == 11:
         return PLAYLISTS['sport']
-    
+
 
 def seconds_to_str(seconds):
-    hours = seconds // (60*60)
-    seconds %= (60*60)
-    minutes = seconds // 60;;
-    seconds %= 60;
+    hours = seconds // (60 * 60)
+    seconds %= (60 * 60)
+    minutes = seconds // 60
+    seconds %= 60
+
     return "%02i:%02i:%02i" % (hours, minutes, seconds)

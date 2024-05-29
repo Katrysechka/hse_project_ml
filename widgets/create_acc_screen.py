@@ -1,21 +1,21 @@
-import sqlite3
-
+import hashlib
 from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QLineEdit, QStackedWidget, QMainWindow
 
 from settings import FILES_UI, WIDGETS
 
-from db.database import database 
+from db.database import database
 from db.models import Profile
+
 
 class CreateAccScreen(QMainWindow):
 
     def __init__(self, stack: QStackedWidget):
         super(CreateAccScreen, self).__init__()
         loadUi(FILES_UI + "LYEcreate.ui", self)
+
         self.widget = stack
-        
-        # buttons function 
+
         self.passwordd.setEchoMode(QLineEdit.Password)
         self.passwordd_2.setEchoMode(QLineEdit.Password)
         self.signup.clicked.connect(self.signupfunction)
@@ -37,18 +37,20 @@ class CreateAccScreen(QMainWindow):
         if password != confirmpassword:
             self.error_message.setText("Passwords do not match.")
             return
-        
+
         if database.is_username_taken(user):
             self.error_message.setText("Username is already taken.")
             return
-        
+
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
         new_profile = Profile(
             username=user,
-            password=password,
+            password=hashed_password,
         )
-        
+
         database.add_profile(
             new_profile
         )
-        
+
         self.widget.setCurrentWidget(WIDGETS['login'])
