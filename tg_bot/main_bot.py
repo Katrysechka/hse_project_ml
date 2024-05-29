@@ -1,13 +1,16 @@
 import asyncio
+import os
 
 from aiogram import Bot, Dispatcher
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.storage.memory import MemoryStorage
+from dotenv import load_dotenv
 
 from tg_bot.handlers import router
 
-API_TOKEN = '6708831766:AAEqa1xRfhgpa7mnKpJHZBSGn9-5Luxx_zc'
+load_dotenv()
+API_TOKEN = os.getenv('API_TOKEN')
 
 bot = Bot(token=API_TOKEN)
 storage = MemoryStorage()
