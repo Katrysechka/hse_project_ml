@@ -11,7 +11,7 @@
 
 ## Demo Image
 
-![Screenshot1](resources/image_files/for_read.jpg) 
+![Screenshot1](resouces/image_files/for_read.jpg) 
 
 ## Content
 
@@ -38,7 +38,7 @@ This will also be necessary when using tg-bot (more details [below](#Support-cha
 
 **Welcome! Dark theme**
 
-![](resources/image_files/for_read_dark.jpg) 
+![](resouces/image_files/for_read_dark.jpg) 
 
 ## Support chat
 
@@ -59,10 +59,10 @@ There are also some bonuses, one of which is on your birthday! 🎂
 As part of our project, we conducted a comprehensive survey among users to gather valuable feedback and insights. Here are the links to the survey and their corresponding statistics as of 05/31/2024:
 
 [Survey about the interface](https://forms.gle/Jn33xH1AZ8u8M5bU7)
-![](resources/image_files/)
+![](resouces/image_files/)
 
 [General survey after installing the application](https://forms.gle/Z7M8XFjqk3ALbRS76)
-![](resources/image_files/)
+![](resouces/image_files/)
 
 Feel free to explore the surveys and delve into the fascinating data we've collected!
 
