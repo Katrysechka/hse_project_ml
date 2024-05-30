@@ -1,7 +1,7 @@
 import os
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-RESOURCE_DIR = f'{ROOT_DIR}/resources'
+RESOURCE_DIR = f'{ROOT_DIR}/resouces'
 
 MUSIC = f"{RESOURCE_DIR}/music_files/"
 FILES_UI = f"{RESOURCE_DIR}/ui_files/"
