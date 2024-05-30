@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QStackedWidget
+from PyQt5.QtWidgets import QApplication, QStackedWidget, QDesktopWidget
 from PyQt5.QtCore import Qt, QTimer
 
 from widgets.welcome_screen import WelcomeScreen
@@ -38,15 +38,21 @@ if __name__ == '__main__':
     widget.addWidget(profile_info)
     widget.addWidget(profile_edit)
 
-    widget.move(widget.pos().x() + 335, widget.pos().y() + 180)
+    screen_geometry = QApplication.desktop().screenGeometry()
     widget.setWindowFlags(Qt.WindowStaysOnTopHint)
     widget.setFixedWidth(791)
     widget.setFixedHeight(600)
+
+    widget_geometry_computer = widget.frameGeometry()
+
+    widget.move(
+        (screen_geometry.width() - widget_geometry_computer.width()) // 2,
+        (screen_geometry.height() - widget_geometry_computer.height()) // 2
+    )
     widget.show()
 
     splash = main_window.show_splash()
     splash.show()
-
     QTimer.singleShot(1500, lambda: widget.setCurrentIndex(-1))
     try:
         sys.exit(app.exec_())

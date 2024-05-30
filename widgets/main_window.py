@@ -499,7 +499,14 @@ class MainWindow(QWidget):
         splash = QSplashScreen(pixmap)
         splash.setFixedSize(pixmap.size())
         splash.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
-        splash.move(splash.pos().x(), splash.pos().y())
+
+        screen_geometry = QApplication.desktop().screenGeometry()
+        splash_geometry = splash.frameGeometry()
+        splash.move(
+            ((screen_geometry.width() - splash_geometry.width()) // 2),
+            ((screen_geometry.height() - splash_geometry.height()) // 2)
+        )
+
         splash.show()
 
         # add animation for splash-screen

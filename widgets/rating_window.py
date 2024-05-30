@@ -48,6 +48,7 @@ class RatingWindow(QDialog):
         chat_support_button.clicked.connect(lambda: self.set_button_color(chat_support_button))
         rate_app_button.clicked.connect(lambda: self.set_button_color(rate_app_button))
         self.current_button = None
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
     def set_button_color(self, button):
         if self.current_button:
